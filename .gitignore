@@ -1,0 +1,8 @@
+node_modules
+.env
+/dist
+rreadme.md
+yarn.lock
+hola.csv
+prisma2.rar
+src/config/sqlDev
