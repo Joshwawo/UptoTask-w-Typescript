@@ -1,6 +1,6 @@
 import { verify } from "jsonwebtoken";
 import {Response, NextFunction } from "express";
-import NewUserModel from "../models/NewUser";
+import NewUserModelo from "../models/NewUser";
 import {id, RequestNvo} from '../interfaces/newAuth.interfaces'
 
 
@@ -13,7 +13,7 @@ const checkAuth = async (req: RequestNvo, res: Response, next: NextFunction) => 
     try {
       token = req.headers.authorization.split(" ")[1];
       const decoded = verify(token, String(process.env.JWT_SECRET));
-      req.user = await NewUserModel.findById({
+      req.user = await NewUserModelo.findById({
         _id: (decoded as id).id,
       }).select("-password, -confirmado, -token -__v -createdAt -updatedAt");
       return next();

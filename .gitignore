@@ -6,3 +6,4 @@ yarn.lock
 hola.csv
 prisma2.rar
 src/config/sqlDev
+dist

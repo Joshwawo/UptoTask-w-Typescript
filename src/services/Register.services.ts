@@ -1,7 +1,10 @@
 import { UserRegister } from "../interfaces/userRegister";
 import NewUserModel from "../models/NewUser";
+
 import generateRandomId from "../utils/randomId";
 import generateJWT from "../utils/generateJWT";
+import { sendEmailRegistration } from "../utils/email";
+import { sendEmailResetPassword } from "../utils/email";
 
 const registerNewUserService = async (body: UserRegister) => {
   try {
@@ -22,6 +25,12 @@ const registerNewUserService = async (body: UserRegister) => {
     await newUser.save();
     //Esto no se trata de nungun error, pero si de un mensaje que se le va a enviar al usuario,
     // y como estamos usando servicios y controladores, lo que hacemos es retornar un mensaje para que el controlador lo maneje
+
+    sendEmailRegistration({
+      email: newUser.email,
+      name: newUser.name,
+      token: newUser.token,
+    });
     const error = new Error(
       "User created correctly, check your email to confirm your account."
     );
@@ -92,6 +101,11 @@ const forgotPasswordService = async (email: string) => {
   try {
     user.token = generateRandomId();
     await user.save();
+    sendEmailResetPassword({
+      email: user.email,
+      name: user.name,
+      token: user.token,
+    });
     return true;
   } catch (error) {
     console.log(error);
