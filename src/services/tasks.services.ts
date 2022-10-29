@@ -1,6 +1,5 @@
 import newTaskModel from "../models/newTask";
 import newProjectModel from "../models/newProject";
-import { FilterQuery } from "mongoose";
 import {userIdTypes} from '../interfaces/userRegister'
 import {bodyTypesTask} from '../interfaces/taskInterface'
 

@@ -1,5 +1,6 @@
 import { UserRegister } from "../interfaces/userRegister";
-import NewUserModel from "../models/NewUser";
+// import NewUserModel from "../models/NewUser";
+import { NewUser as NewUserModel } from "../models/newUser";
 
 import generateRandomId from "../utils/randomId";
 import generateJWT from "../utils/generateJWT";

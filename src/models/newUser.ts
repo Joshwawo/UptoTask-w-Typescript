@@ -51,4 +51,4 @@ newUserSchema.methods.comprobarPassword = async function (passwordFormulario:str
 
 
 const NewUser = model("NewUser", newUserSchema);
-export default NewUser;
+export  {NewUser};
