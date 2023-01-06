@@ -8,6 +8,7 @@ export interface taskInterface {
   deliveryDay: Date;
   priority: Priority | string;
   project: Schema.Types.ObjectId | string | {} | any;
+  completed: Schema.Types.ObjectId | string | {} | any;
 }
 
 //Perdoname dioh mio por los any
@@ -23,6 +24,7 @@ export interface BodyProjectTypes {
   name: string;
   description: string;
   client: string;
+  deliveryDay: Date;
 }
 
 export interface bodyTypesTask {

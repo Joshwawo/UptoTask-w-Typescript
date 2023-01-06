@@ -5,6 +5,7 @@ export interface ProjectInterface {
   client: string;
   creator: {};
   partners: [];
+  tasks: [];
 }
 
 export interface UserProjectTypes {

@@ -31,6 +31,11 @@ const TaskSchema = new Schema<taskInterface>(
       type: Schema.Types.ObjectId,
       ref: "newProject",
     },
+    completed: {
+      type: Schema.Types.ObjectId,
+      ref: "NewUser",
+      
+    },
   },
   {
     timestamps: true,

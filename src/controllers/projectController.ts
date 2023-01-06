@@ -11,6 +11,14 @@ import {
   getProjectServices,
   newProjectServices,
   getProjectBIdService,
+  updateProjectByIdService,
+  deleteProjectByIdService,
+  addPartnerService,
+  searchPartnerService,
+  deletePartnerService,
+
+
+
 } from "../services/proyect.services";
 
 //TODO:move all this to services
@@ -46,6 +54,44 @@ const getProjectByID = async ({ params, user }: RequestNvo, res: Response) => {
 };
 
 const updateProjectById = async (req: RequestNvo, res: Response) => {
-  res.json({ message: "Project updated" });
+   const response = await updateProjectByIdService(req.params.id, req.body, req.user);
+  if (response instanceof Error) {
+    return res.status(404).json({ message: response.message });
+
+  }
+  res.json(response);
 };
-export { getProject, newProject, getProjectByID, updateProjectById };
+
+const deleteProjectById = async (req: RequestNvo, res: Response) => {
+  const response = await deleteProjectByIdService(req.params.id, req.user);
+  if (response instanceof Error) {
+    return res.status(404).json({ message: response.message });
+  }
+  res.json(response);
+}
+
+const addPartner = async (req: RequestNvo, res: Response) => {
+  const response = await addPartnerService(req.params.id, req.body, req.user);
+  if (response instanceof Error) {
+    return res.status(404).json({ message: response.message });
+  }
+  res.json(response);
+}
+
+const searchPartner = async (req: RequestNvo, res: Response) => {
+  const response = await searchPartnerService( req.body);
+  if (response instanceof Error) {
+    return res.status(404).json({ message: response.message });
+  }
+  res.json(response);
+}
+
+const deletePartner = async (req: RequestNvo, res: Response) => {
+  const response = await deletePartnerService(req.params.id, req.body, req.user);
+  if (response instanceof Error) {
+    return res.status(404).json({ message: response.message });
+  }
+  res.json(response);
+}
+
+export { getProject, newProject, getProjectByID, updateProjectById,deleteProjectById,addPartner,searchPartner,deletePartner };

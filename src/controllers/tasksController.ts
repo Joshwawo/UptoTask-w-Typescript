@@ -5,7 +5,8 @@ import {
   newTaskServices,
   getTaskServices,
   updateTaskService,
-  deleteTaskService
+  deleteTaskService,
+  changeStatusTaskService,
 } from "../services/tasks.services";
 
 const addTasks = async ({ body, user }: RequestNvo, res: Response) => {
@@ -55,4 +56,15 @@ const deleteTask =async ({params:{id},user}:RequestNvo, res:Response) => {
   
 }
 
-export { addTasks, getTask, updateTask,deleteTask };
+const changeStatusTask = async (req: RequestNvo, res: Response) => {
+
+  const task = await changeStatusTaskService(req.params.id, req.user);
+
+  if (task instanceof Error) {
+    return res.status(400).json({ message: task.message });
+  }
+
+  res.json(task);
+}
+
+export { addTasks, getTask, updateTask,deleteTask , changeStatusTask };

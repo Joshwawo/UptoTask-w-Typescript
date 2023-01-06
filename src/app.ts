@@ -20,3 +20,5 @@ app.use(router)
 app.listen(PORT, ()=>{
     console.log(`Server running on http://localhost:${PORT}`)
 })
+
+//TODO: Add socket.io or not

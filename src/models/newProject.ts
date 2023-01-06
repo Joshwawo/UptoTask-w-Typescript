@@ -33,6 +33,12 @@ const ProjectSchema = new Schema<ProjectInterface>(
         ref: "NewUser",
       },
     ],
+    tasks: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "newTask",
+      }
+    ],
   },
   {
     timestamps: true,

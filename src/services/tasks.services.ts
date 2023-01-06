@@ -24,6 +24,9 @@ const newTaskServices = async (body: bodyTypesTask, user: userIdTypes) => {
 
   try {
     const taskStored = await newTaskModel.create(body);
+    //store the task in the project
+    projectExists.tasks.push(taskStored._id as never);
+    await projectExists.save();
     return taskStored;
   } catch (error) {
     console.log(error);
@@ -97,14 +100,50 @@ const deleteTaskService = async (id: string, user: userIdTypes) => {
   }
 
   try {
-    await newTaskModel.findByIdAndDelete(id);
-    return "Task deleted";
+  //  const taskDeleted = await newTaskModel.findByIdAndDelete(id);
+    const project:any = await newProjectModel.findById(task?.project._id);
+    project?.tasks?.pull(id);
+    await Promise.allSettled([project?.save(), await newTaskModel.findByIdAndDelete(id)]);
+    return {
+      message: "Task deleted",
+      taskDeletedId: task?._id,
+    }
   } catch (error) {
     console.log(error);
   }
 
   return task;
 };
+
+const changeStatusTaskService = async (id: string, user: userIdTypes) => {
+  const task = await searchTaskState(id);
+
+  if (!task) {
+    const error = new Error("This task does not exits");
+    return error;
+  }
+
+  if(String(task.project.creator) !== String(user._id) 
+  && !task.project.partners.some((partner: any) => String(partner._id) === String(user._id))){
+    const error = new Error("You do not have the permissions to see this task");
+    return error;
+  }
+
+  task.state = !task.state;
+  task.completed = task.state ? user._id : null;
+
+  
+
+  try {
+    await task.save();
+    const taskStored = await searchTaskState(id);
+    return taskStored;
+  } catch (error) {
+    console.log(error);
+  }
+
+  return task;
+}
 
 //*Funtions helper
 const searchProject = async (id: string) => {
@@ -127,10 +166,21 @@ const searchTask = async (id: string) => {
     return null;
   }
 };
+const searchTaskState = async (id: string) => {
+  try {
+    const search = await newTaskModel.findById(id).populate("project").populate("completed");
+    if (!search) return;
+
+    return search;
+  } catch (error) {
+    return null;
+  }
+};
 
 export {
   newTaskServices,
   getTaskServices,
   updateTaskService,
   deleteTaskService,
+  changeStatusTaskService,
 };
